@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
+const Tour = require('./tourModel');
+
 const reviewSchema = new Schema(
 	{
 		review: {
@@ -52,6 +54,60 @@ reviewSchema.pre(/^find/, function(next) {
 	});
 
 	next();
+});
+
+// static method
+reviewSchema.statics.calcAverageRatings = async function(tourId) {
+	// in static method this keyword points to the model but not to the document
+	const stats = await this.aggregate([
+		{
+			$match: { tour: tourId },
+		},
+		{
+			$group: {
+				_id: '$tour',
+				nRating: { $sum: 1 },
+				avgRating: { $avg: '$rating' },
+			},
+		},
+	]);
+
+	if (stats.length > 0) {
+		await Tour.findByIdAndUpdate(tourId, {
+			ratingsQuantity: stats[0].nRating,
+			ratingsAverage: stats[0].avgRating,
+		});
+	} else {
+		await Tour.findByIdAndUpdate(tourId, {
+			ratingsQuantity: 0,
+			ratingsAverage: 4.5,
+		});
+	}
+};
+
+reviewSchema.post('save', function() {
+	// this keyword points to current document
+	// this.constructor points to the constructor which created the current document
+
+	this.constructor.calcAverageRatings(this.tour);
+});
+
+// findByIdAndUpdate
+// findByIdAndDelete
+reviewSchema.pre(/^findOneAnd/, async function(next) {
+	// in query middleware this keyword points to the current query ( but not document )
+
+	this.r = await this.findOne();
+	// passing r variable by attaching it to this keyword to the post middlware to
+	// call calcAverageRatings , because in post middleware we do not have access to
+	// the document , because it has already been saved/updated
+	console.log(this.r);
+	next();
+});
+
+reviewSchema.post(/^findOneAnd/, async function() {
+	// await this.findOne() will not work here because the query has already been executed
+	await this.r.constructor.calcAverageRatings(this.r.tour);
 });
 
 module.exports = mongoose.model('Review', reviewSchema);
