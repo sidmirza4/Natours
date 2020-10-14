@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -15,7 +16,14 @@ const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // 1) GLOBAL MIDDLEWARES
+
+// serving static files
+// app.use(express.static(`${__dirname}/public`));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // set security http header
 app.use(helmet());
@@ -56,9 +64,6 @@ app.use(
 	})
 );
 
-// serving static files
-app.use(express.static(`${__dirname}/public`));
-
 //  test middleware
 app.use((req, res, next) => {
 	req.requestTime = new Date().toISOString();
@@ -66,6 +71,12 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
+app.get('/', (req, res) => {
+	res.status(200).render('base', {
+		title: 'Natours | Exciting tours for adventurous people',
+	});
+});
+
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
