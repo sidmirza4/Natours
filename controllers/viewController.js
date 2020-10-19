@@ -1,4 +1,5 @@
 const Tour = require('../models/tourModel');
+const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getOverview = catchAsync(async (req, res) => {
@@ -15,7 +16,7 @@ exports.getOverview = catchAsync(async (req, res) => {
 	});
 });
 
-exports.getTour = catchAsync(async (req, res) => {
+exports.getTour = catchAsync(async (req, res, next) => {
 	// get the data for the requested route including reviews and tour-guides
 	const { slug } = req.params;
 
@@ -23,6 +24,10 @@ exports.getTour = catchAsync(async (req, res) => {
 		path: 'reviews',
 		fields: 'review rating user',
 	});
+
+	if (!tour) {
+		return next(new AppError('Tour is not found', 404));
+	}
 
 	// render the template and pass the data
 
