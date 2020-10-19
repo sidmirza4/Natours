@@ -2,10 +2,10 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const hpp = require('hpp');
+// const xss = require('xss-clean');
+// const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
@@ -28,7 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set security http header
-app.use(helmet());
+// app.use(helmet());
 
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
@@ -51,26 +51,25 @@ app.use(cookieParser());
 app.use(mongoSanitize());
 
 // DATA SANITIZATION AGAINST XSS
-app.use(xss());
+// app.use(xss());
 
 // preventing parameter pollutioning
-app.use(
-	hpp({
-		whitelist: [
-			'duration',
-			'ratingsQuantity',
-			'ratingsAverage',
-			'maxGroupSize',
-			'difficulty',
-			'price',
-		],
-	})
-);
+// app.use(
+// 	hpp({
+// 		whitelist: [
+// 			'duration',
+// 			'ratingsQuantity',
+// 			'ratingsAverage',
+// 			'maxGroupSize',
+// 			'difficulty',
+// 			'price',
+// 		],
+// 	})
+// );
 
 //  test middleware
 app.use((req, res, next) => {
 	req.requestTime = new Date().toISOString();
-	console.log(req.cookies);
 	next();
 });
 
