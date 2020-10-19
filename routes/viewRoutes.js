@@ -1,5 +1,5 @@
 const express = require('express');
-const { protect } = require('../controllers/authController');
+const { isLoggedIn } = require('../controllers/authController');
 
 const {
 	getOverview,
@@ -9,8 +9,10 @@ const {
 
 const router = express.Router();
 
+router.use(isLoggedIn);
+
 router.get('/', getOverview);
 router.route('/login').get(getLogin);
-router.get('/tours/:slug', protect, getTour);
+router.get('/tours/:slug', getTour);
 
 module.exports = router;
