@@ -4,13 +4,15 @@ import '@babel/polyfill';
 import { login, logout } from './login';
 import { showMap } from './mapbox';
 import { updateSettings } from './updateSettings';
+import { bookTour } from './stripe';
 
 // DOM elements
+const mapContainer = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form');
 const userPasswordForm = document.querySelector('.form-user-password');
-const mapContainer = document.getElementById('map');
+const bookBtn = document.getElementById('book-tour');
 
 if (mapContainer) {
 	const locations = JSON.parse(mapContainer.dataset.locations);
@@ -63,3 +65,10 @@ if (userPasswordForm) {
 			'Save password';
 	});
 }
+
+if (bookBtn)
+	bookBtn.addEventListener('click', (e) => {
+		e.target.textContent = 'Processing...';
+		const { tourId } = e.target.dataset;
+		bookTour(tourId);
+	});
