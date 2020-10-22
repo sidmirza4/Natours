@@ -43,3 +43,17 @@ process.on('uncaughtException', (err) => {
 		process.exit(1);
 	});
 });
+
+process.on('SIGTERM', () => {
+	console.log('SIGTERM RECIEVED, SHUTTIN DOWN');
+	server.close(() => {
+		console.log('APPLICATION SHUTDOWN');
+	});
+});
+
+process.on('SIGTERM', () => {
+	console.log('SIGTERM RECIEVED, SHUTTIN DOWN');
+	server.close(() => {
+		console.log('APPLICATION SHUTDOWN');
+	});
+});
