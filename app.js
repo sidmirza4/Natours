@@ -12,6 +12,7 @@ const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
+const { webhookCheckout } = require('./controllers/bookingController');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -53,6 +54,15 @@ const limiter = rateLimit({
 	message: 'Too many requests from this IP, please try again in an hour',
 });
 app.use('/api', limiter);
+
+// this controller is here because stripe accepts body as string (raw format),
+// not as json data, if the body meet the body-parser (defined below)
+// the data will be converted into json.
+app.post(
+	'/webhook-checkout',
+	express.raw({ type: 'application/json' }),
+	webhookCheckout
+);
 
 // body parser, reading data from the body to req.body
 app.use(express.json({ limit: '10kb' }));
