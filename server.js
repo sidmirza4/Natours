@@ -11,7 +11,7 @@ process.on('uncaughtException', (err) => {
 
 const app = require('./app');
 
-const DB = process.env.DATABASE_LOCAL || process.env.DATABASE_ATLAS;
+const DB = process.env.DATABASE_ATLAS;
 
 mongoose
 	.connect(DB, {
