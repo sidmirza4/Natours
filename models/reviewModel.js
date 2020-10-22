@@ -103,7 +103,6 @@ reviewSchema.pre(/^findOneAnd/, async function(next) {
 	// passing r variable by attaching it to this keyword to the post middlware to
 	// call calcAverageRatings , because in post middleware we do not have access to
 	// the document , because it has already been saved/updated
-	console.log(this.r);
 	next();
 });
 
