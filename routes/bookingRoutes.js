@@ -1,29 +1,24 @@
 const express = require('express');
-const { protect, restrictTo } = require('./../controllers/authController');
-const {
-	getCheckoutSession,
-	getAllBookings,
-	createBooking,
-	getBooking,
-	updateBooking,
-	deleteBooking,
-} = require('./../controllers/bookingController');
+const bookingController = require('./../controllers/bookingController');
+const authController = require('./../controllers/authController');
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 
-router.use(protect);
-router.get('/checkout-session/:tourId', getCheckoutSession);
+router.use(authController.protect);
 
-router.use(restrictTo('admin', 'lead-guide'));
+router.get('/checkout-session/:tourId', bookingController.getCheckoutSession);
+
+router.use(authController.restrictTo('admin', 'lead-guide'));
+
 router
 	.route('/')
-	.get(getAllBookings)
-	.post(createBooking);
+	.get(bookingController.getAllBookings)
+	.post(bookingController.createBooking);
 
 router
 	.route('/:id')
-	.get(getBooking)
-	.patch(updateBooking)
-	.delete(deleteBooking);
+	.get(bookingController.getBooking)
+	.patch(bookingController.updateBooking)
+	.delete(bookingController.deleteBooking);
 
 module.exports = router;

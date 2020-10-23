@@ -11,7 +11,7 @@ router.get('/logout', authController.logout);
 router.post('/forgotPassword', authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
-// protect all routes after this middleware
+// Protect all routes after this middleware
 router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updatePassword);
@@ -24,7 +24,6 @@ router.patch(
 );
 router.delete('/deleteMe', userController.deleteMe);
 
-// restrict below routes only to admin
 router.use(authController.restrictTo('admin'));
 
 router

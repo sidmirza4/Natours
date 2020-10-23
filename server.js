@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './config.env' });
-
 process.on('uncaughtException', (err) => {
-	console.log(err.name, err.message);
-	console.log('UNHANDLED EXCEPTION, SHUTTING DOWN');
+	console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+	console.log(err.name, err.message, err);
 	process.exit(1);
 });
 
+dotenv.config({ path: './config.env' });
 const app = require('./app');
 
 const DB = process.env.DATABASE_ATLAS;
@@ -27,33 +26,17 @@ const server = app.listen(port, () => {
 	console.log(`App running on port ${port}...`);
 });
 
-// EVENT AND EVENT LISTENER
 process.on('unhandledRejection', (err) => {
+	console.log('UNHANDLED REJECTION! 💥 Shutting down...');
 	console.log(err.name, err.message);
-	console.log('UNHANDLED REJECTION, SHUTTING DOWN');
-	server.close(() => {
-		process.exit(1);
-	});
-});
-
-process.on('uncaughtException', (err) => {
-	console.log(err.name, err.message);
-	console.log('UNHANDLED EXCEPTION, SHUTTING DOWN');
 	server.close(() => {
 		process.exit(1);
 	});
 });
 
 process.on('SIGTERM', () => {
-	console.log('SIGTERM RECIEVED, SHUTTIN DOWN');
+	console.log('👋 SIGTERM RECEIVED. Shutting down gracefully');
 	server.close(() => {
-		console.log('APPLICATION SHUTDOWN');
-	});
-});
-
-process.on('SIGTERM', () => {
-	console.log('SIGTERM RECIEVED, SHUTTIN DOWN');
-	server.close(() => {
-		console.log('APPLICATION SHUTDOWN');
+		console.log('💥 Process terminated!');
 	});
 });
