@@ -2,7 +2,7 @@ const express = require('express');
 const { protect, restrictTo } = require('./../controllers/authController');
 const {
 	getCheckoutSession,
-	getAllBooking,
+	getAllBookings,
 	createBooking,
 	getBooking,
 	updateBooking,
@@ -17,7 +17,7 @@ router.get('/checkout-session/:tourId', getCheckoutSession);
 router.use(restrictTo('admin', 'lead-guide'));
 router
 	.route('/')
-	.get(getAllBooking)
+	.get(getAllBookings)
 	.post(createBooking);
 
 router
