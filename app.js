@@ -53,7 +53,7 @@ const limiter = rateLimit({
 	windowMs: 60 * 60 * 1000,
 	message: 'Too many requests from this IP, please try again in an hour',
 });
-app.use('/api', limiter);
+app.use('/api/', limiter);
 
 // this controller is here because stripe accepts body as string (raw format),
 // not as json data, if the body meet the body-parser (defined below)
