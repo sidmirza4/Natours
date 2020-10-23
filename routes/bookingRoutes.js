@@ -12,7 +12,7 @@ const {
 const router = express.Router({ mergeParams: true });
 
 router.use(protect);
-router.get('/checkout-session/:tourID', protect, getCheckoutSession);
+router.get('/checkout-session/:tourId', getCheckoutSession);
 
 router.use(restrictTo('admin', 'lead-guide'));
 router
