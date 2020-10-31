@@ -10,6 +10,7 @@ If you find any issue/bug or want me to add a feature, please open an issue.
 --> Advanced CSS like grids, clip path and flexbox.  
 --> Maps integration using <a target="_blank" href = 'https://mapbox.com'>Mapbox</a>.  
 --> File upload feature using multer.  
+--> Use of pug templates for the pages.
 --> Emails using <a target='_blank' href = 'https://sendgrid.com'>Sendgrid</a>. 
 
 ==> You are allowed to use Natours API for you own front-end, but there is no proper documentation available for the API yet. So if you want to use the api contact me at my email <a href="mailto:sidmirza4@gmail.com">here</a>. Or you can open an issue for that as well.  
