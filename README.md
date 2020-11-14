@@ -22,5 +22,5 @@ Welcome Guys! This repo consists of my code for Natours Project, which I made as
 - You are completely free to use the Natours API, for making a Client-Side website or webapp. Feel free to check it, using the link provided.
 - If you any queries, regarding the use of API, feel free to contact me on <a href="mailto:sidmirza4@gmail.com">G-Mail</a>.
 
-Make sure to check the website. I'll be waiting for your precious feedback.
+Make sure to check the website. I'll be waiting for your precious feedback.  
 Happy Coding :)
